@@ -1,0 +1,217 @@
+/* 全局样式 */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Helvetica Neue', Helvetica, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', Arial, sans-serif;
+  background-color: #f5f7fa;
+  color: #333;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+ul, li {
+  list-style: none;
+}
+
+/* 布局相关 */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.flex {
+  display: flex;
+}
+
+.flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.flex-between {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* 卡片样式 */
+.card {
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+/* 按钮样式 */
+.btn-primary {
+  background-color: #409eff;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.btn-primary:hover {
+  background-color: #66b1ff;
+}
+
+/* 表单样式 */
+.form-item {
+  margin-bottom: 20px;
+}
+
+.form-label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 500;
+}
+
+.form-input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #dcdfe6;
+  border-radius: 4px;
+  font-size: 14px;
+  transition: border-color 0.3s;
+}
+
+.form-input:focus {
+  border-color: #409eff;
+  outline: none;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .container {
+    padding: 0 15px;
+  }
+  
+  .card {
+    padding: 15px;
+  }
+  
+  /* 表单元素移动端适配 */
+  .form-item {
+    margin-bottom: 15px;
+  }
+  
+  .form-label {
+    font-size: 14px;
+    margin-bottom: 6px;
+  }
+  
+  .form-input {
+    padding: 10px 12px;
+    font-size: 14px;
+    border-radius: 6px;
+  }
+  
+  .el-form-item {
+    margin-bottom: 20px;
+  }
+  
+  .el-form-item__label {
+    font-size: 14px;
+  }
+  
+  .el-input__wrapper {
+    border-radius: 6px;
+  }
+  
+  .el-input__inner {
+    font-size: 14px;
+    height: 40px;
+  }
+  
+  .el-select {
+    width: 100%;
+  }
+  
+  .el-select__wrapper {
+    border-radius: 6px;
+  }
+  
+  .el-select__input {
+    font-size: 14px;
+  }
+  
+  .el-button {
+    height: 40px;
+    font-size: 14px;
+    border-radius: 6px;
+  }
+  
+  .el-textarea__inner {
+    font-size: 14px;
+    min-height: 80px;
+  }
+  
+  /* 按钮组移动端适配 */
+  .el-button-group {
+    width: 100%;
+    display: flex;
+  }
+  
+  .el-button-group .el-button {
+    flex: 1;
+  }
+  
+  /* 对话框移动端适配 */
+  .el-dialog {
+    width: 90% !important;
+    margin: 20px auto !important;
+  }
+  
+  .el-dialog__header {
+    padding: 15px;
+  }
+  
+  .el-dialog__body {
+    padding: 15px;
+  }
+  
+  .el-dialog__footer {
+    padding: 15px;
+  }
+  
+  /* 标签页移动端适配 */
+  .el-tabs__header {
+    margin-bottom: 15px;
+  }
+  
+  .el-tabs__nav-wrap {
+    padding: 0 15px;
+  }
+  
+  /* 分页移动端适配 */
+  .el-pagination {
+    font-size: 12px;
+  }
+  
+  .el-pagination__sizes {
+    display: none;
+  }
+  
+  /* 上传组件移动端适配 */
+  .el-upload--picture-card {
+    width: 80px;
+    height: 80px;
+  }
+  
+  .el-upload-list--picture-card .el-upload-list__item {
+    width: 80px;
+    height: 80px;
+  }
+}

@@ -1,0 +1,11 @@
+// 统一导出所有API模块
+export { authApi } from './auth'
+export { productApi } from './product'
+export { orderApi } from './order'
+export { categoryApi } from './category'
+export { userApi } from './user'
+export { favoriteApi } from './favorite'
+export { communityApi } from './community'
+export { platformParamApi } from './platformParamApi'
+export { pickupPointApi } from './pickupPointApi'
+export { roleApi } from './roleApi'
