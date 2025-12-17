@@ -3,18 +3,23 @@
 ## 1. 数据库概述
 
 ### 1.1 数据库名称
+
 campus_second_hand
 
 ### 1.2 数据库版本
+
 MySQL 8.0+
 
 ### 1.3 数据库字符集
+
 UTF-8
 
 ### 1.4 数据库引擎
+
 InnoDB
 
 ### 1.5 数据库用途
+
 存储校园二手交易平台的所有业务数据，包括用户信息、商品信息、订单信息、社区讨论、评论、收藏等。
 
 ## 2. 数据库设计原则
@@ -26,6 +31,8 @@ InnoDB
 5. **安全性**：敏感数据加密存储，设置合理的权限控制
 
 ## 3. 数据库实体关系图
+
+### 3.1 Mermaid关系图
 
 ```mermaid
 erDiagram
@@ -51,11 +58,22 @@ erDiagram
     DISCUSSION ||--o{ DISCUSSION_TAG : 包含标签
 ```
 
+### 3.2 类图
+
+
+
+![plantuml-diagram](C:\Users\z'y's\Desktop\campus-second-hand-platform\mysql\plantuml-diagram.png)
+
+### 3.3 实体关系图
+
+![plantuml-diagram1](C:\Users\z'y's\Desktop\campus-second-hand-platform\mysql\plantuml-diagram1.png)
+
 ## 4. 详细表结构
 
 ### 4.1 用户相关表
 
 #### 4.1.1 users表
+
 | 字段名 | 数据类型 | 约束 | 描述 |
 |--------|----------|------|------|
 | id | BIGINT | PRIMARY KEY, AUTO_INCREMENT | 用户ID |
@@ -73,6 +91,7 @@ erDiagram
 | updated_at | DATETIME | DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP | 更新时间 |
 
 #### 4.1.2 roles表
+
 | 字段名 | 数据类型 | 约束 | 描述 |
 |--------|----------|------|------|
 | id | BIGINT | PRIMARY KEY, AUTO_INCREMENT | 角色ID |
@@ -80,6 +99,7 @@ erDiagram
 | description | VARCHAR(255) | | 角色描述 |
 
 #### 4.1.3 user_roles表（用户角色关联表）
+
 | 字段名 | 数据类型 | 约束 | 描述 |
 |--------|----------|------|------|
 | user_id | BIGINT | NOT NULL, FOREIGN KEY (user_id) REFERENCES users(id) | 用户ID |
@@ -89,6 +109,7 @@ erDiagram
 ### 4.2 商品相关表
 
 #### 4.2.1 categories表
+
 | 字段名 | 数据类型 | 约束 | 描述 |
 |--------|----------|------|------|
 | id | BIGINT | PRIMARY KEY, AUTO_INCREMENT | 分类ID |
@@ -101,6 +122,7 @@ erDiagram
 | updated_at | DATETIME | DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP | 更新时间 |
 
 #### 4.2.2 products表
+
 | 字段名 | 数据类型 | 约束 | 描述 |
 |--------|----------|------|------|
 | id | BIGINT | PRIMARY KEY, AUTO_INCREMENT | 商品ID |
@@ -125,6 +147,7 @@ erDiagram
 ### 4.3 订单相关表
 
 #### 4.3.1 orders表
+
 | 字段名 | 数据类型 | 约束 | 描述 |
 |--------|----------|------|------|
 | id | BIGINT | PRIMARY KEY, AUTO_INCREMENT | 订单ID |
@@ -145,6 +168,7 @@ erDiagram
 | updated_at | DATETIME | DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP | 更新时间 |
 
 #### 4.3.2 cart_items表
+
 | 字段名 | 数据类型 | 约束 | 描述 |
 |--------|----------|------|------|
 | id | BIGINT | PRIMARY KEY, AUTO_INCREMENT | 购物车项ID |
@@ -157,6 +181,7 @@ erDiagram
 ### 4.4 社区相关表
 
 #### 4.4.1 discussions表
+
 | 字段名 | 数据类型 | 约束 | 描述 |
 |--------|----------|------|------|
 | id | BIGINT | PRIMARY KEY, AUTO_INCREMENT | 讨论ID |
@@ -171,6 +196,7 @@ erDiagram
 | updated_at | DATETIME | DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP | 更新时间 |
 
 #### 4.4.2 discussion_images表（讨论图片表）
+
 | 字段名 | 数据类型 | 约束 | 描述 |
 |--------|----------|------|------|
 | id | BIGINT | PRIMARY KEY, AUTO_INCREMENT | 图片ID |
@@ -178,6 +204,7 @@ erDiagram
 | image_url | VARCHAR(255) | NOT NULL | 图片URL |
 
 #### 4.4.3 discussion_tags表（讨论标签表）
+
 | 字段名 | 数据类型 | 约束 | 描述 |
 |--------|----------|------|------|
 | id | BIGINT | PRIMARY KEY, AUTO_INCREMENT | 标签ID |
@@ -185,6 +212,7 @@ erDiagram
 | tag | VARCHAR(50) | NOT NULL | 标签内容 |
 
 #### 4.4.4 comments表
+
 | 字段名 | 数据类型 | 约束 | 描述 |
 |--------|----------|------|------|
 | id | BIGINT | PRIMARY KEY, AUTO_INCREMENT | 评论ID |
@@ -199,6 +227,7 @@ erDiagram
 | updated_at | DATETIME | DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP | 更新时间 |
 
 #### 4.4.5 discussion_likes表（讨论点赞表）
+
 | 字段名 | 数据类型 | 约束 | 描述 |
 |--------|----------|------|------|
 | id | BIGINT | PRIMARY KEY, AUTO_INCREMENT | 点赞ID |
@@ -210,6 +239,7 @@ erDiagram
 ### 4.5 收藏相关表
 
 #### 4.5.1 favorites表
+
 | 字段名 | 数据类型 | 约束 | 描述 |
 |--------|----------|------|------|
 | id | BIGINT | PRIMARY KEY, AUTO_INCREMENT | 收藏ID |
@@ -220,6 +250,7 @@ erDiagram
 ### 4.6 消息相关表
 
 #### 4.6.1 messages表
+
 | 字段名 | 数据类型 | 约束 | 描述 |
 |--------|----------|------|------|
 | id | BIGINT | PRIMARY KEY, AUTO_INCREMENT | 消息ID |
@@ -235,6 +266,7 @@ erDiagram
 ### 4.7 其他表
 
 #### 4.7.1 pickup_points表（取货点表）
+
 | 字段名 | 数据类型 | 约束 | 描述 |
 |--------|----------|------|------|
 | id | BIGINT | PRIMARY KEY, AUTO_INCREMENT | 取货点ID |
@@ -247,6 +279,7 @@ erDiagram
 | updated_at | DATETIME | DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP | 更新时间 |
 
 #### 4.7.2 platform_params表（平台参数表）
+
 | 字段名 | 数据类型 | 约束 | 描述 |
 |--------|----------|------|------|
 | id | BIGINT | PRIMARY KEY, AUTO_INCREMENT | 参数ID |
@@ -258,6 +291,7 @@ erDiagram
 | updated_at | DATETIME | DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP | 更新时间 |
 
 #### 4.7.3 announcements表（公告表）
+
 | 字段名 | 数据类型 | 约束 | 描述 |
 |--------|----------|------|------|
 | id | BIGINT | PRIMARY KEY, AUTO_INCREMENT | 公告ID |
@@ -271,28 +305,33 @@ erDiagram
 ## 5. 数据库索引设计
 
 ### 5.1 用户表索引
+
 - PRIMARY KEY: id
 - UNIQUE: username, email
 - INDEX: is_active, created_at
 
 ### 5.2 商品表索引
+
 - PRIMARY KEY: id
 - FOREIGN KEY: category_id, seller_id
 - INDEX: status, created_at, view_count, like_count
 - INDEX: location, category_id
 
 ### 5.3 订单表索引
+
 - PRIMARY KEY: id
 - UNIQUE: order_number
 - FOREIGN KEY: product_id, buyer_id, seller_id
 - INDEX: status, created_at, payment_status
 
 ### 5.4 讨论表索引
+
 - PRIMARY KEY: id
 - FOREIGN KEY: user_id
 - INDEX: created_at, like_count, comment_count, view_count
 
 ### 5.5 评论表索引
+
 - PRIMARY KEY: id
 - FOREIGN KEY: product_id, discussion_id, user_id, parent_id
 - INDEX: created_at
@@ -318,6 +357,7 @@ erDiagram
 ## 8. 数据库初始化脚本
 
 数据库初始化脚本位于 `backend/src/main/resources/` 目录下：
+
 - `data.sql` - 数据库表结构初始化脚本
 - `import.sql` - 初始数据导入脚本
 
