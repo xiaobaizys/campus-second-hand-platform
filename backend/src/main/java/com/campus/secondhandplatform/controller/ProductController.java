@@ -124,7 +124,12 @@ public class ProductController {
 
         if (product.getSeller() != null) {
             dto.setSellerId(product.getSeller().getId());
-            dto.setSellerName(product.getSeller().getUsername());
+            // 如果用户没有昵称，使用用户名作为fallback
+            String sellerName = product.getSeller().getNickname();
+            if (sellerName == null || sellerName.isEmpty()) {
+                sellerName = product.getSeller().getUsername();
+            }
+            dto.setSellerName(sellerName);
             dto.setSellerAvatar(product.getSeller().getAvatar());
         }
 

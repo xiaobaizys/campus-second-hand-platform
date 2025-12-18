@@ -11,10 +11,16 @@
           </div>
           <div class="product-images">
             <div class="main-image">
-              <img :src="currentImage || '/placeholder.svg'" :alt="product.title || '商品图片'" />
+              <el-carousel v-if="product.images && product.images.length > 0" height="400px" indicator-position="outside" @change="handleImageChange" @click="handleCarouselClick">
+                <el-carousel-item v-for="(image, index) in product.images" :key="index">
+                  <img :src="image || '/placeholder.svg'" :alt="`${product.title || '商品图片'} ${index + 1}`" />
+                </el-carousel-item>
+              </el-carousel>
+              <!-- 如果没有图片，显示一个占位符 -->
+              <img v-else src="/placeholder.svg" :alt="product.title || '商品图片'" />
             </div>
             <div class="image-thumbnails">
-              <div v-for="(image, index) in product.images || []" :key="index" class="thumbnail" :class="{ active: currentImage === image }" @click="currentImage = image">
+              <div v-for="(image, index) in product.images || []" :key="index" class="thumbnail" :class="{ active: currentImage === image }" @click="currentImage = image; carouselRef?.setActiveItem(index)">
                 <img :src="image || '/placeholder.svg'" :alt="`${product.title || '商品图片'} ${index + 1}`" />
               </div>
               <!-- 如果没有图片，显示一个占位符 -->
@@ -183,6 +189,7 @@ import { productApi } from '@/api/product'
 const loading = ref(false)
 const product = ref<Product | null>(null)
 const currentImage = ref('')
+const carouselRef = ref<any>(null)
 
 // 计算属性：获取卖家评分
 const sellerRating = computed(() => {
@@ -404,6 +411,22 @@ const getStatusText = (status: string | undefined) => {
   }
 }
 
+// 处理轮播图图片变化
+const handleImageChange = (index: number) => {
+  if (product.value && product.value.images) {
+    currentImage.value = product.value.images[index] || '/placeholder.svg'
+  }
+}
+
+// 处理轮播图点击事件
+const handleCarouselClick = () => {
+  if (product.value && product.value.images && product.value.images.length > 1) {
+    const currentIndex = product.value.images.indexOf(currentImage.value)
+    const nextIndex = (currentIndex + 1) % product.value.images.length
+    carouselRef.value?.setActiveItem(nextIndex)
+  }
+}
+
 // 格式化日期
 const formatDate = (date: Date | string | number | undefined | null) => {
   // 如果date为undefined或null，返回当前日期
@@ -445,9 +468,9 @@ const formatDate = (date: Date | string | number | undefined | null) => {
   })
 }
 
-// 返回上一页
+// 返回商品列表页
 const goBack = () => {
-  router.go(-1)
+  router.push('/products')
 }
 
 // 跳转到商品列表页
@@ -795,17 +818,40 @@ onMounted(async () => {
   overflow: hidden;
   border-radius: 8px;
   margin-bottom: 15px;
+  background-color: #f5f7fa;
+  
+  /* 轮播图样式 */
+  :deep(.el-carousel) {
+    height: 100%;
+  }
+  
+  :deep(.el-carousel__container) {
+    height: 100%;
+  }
+  
+  :deep(.el-carousel__item) {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  :deep(.el-carousel__indicator) {
+    margin-top: 10px;
+  }
 }
 
 .main-image img {
   width: 100%;
   height: 100%;
   object-fit: contain;
+  max-height: 400px;
 }
 
 .image-thumbnails {
   display: flex;
   gap: 10px;
+  margin-top: 10px;
 }
 
 .thumbnail {
@@ -816,6 +862,7 @@ onMounted(async () => {
   cursor: pointer;
   border: 2px solid transparent;
   transition: border-color 0.3s;
+  background-color: #f5f7fa;
 }
 
 .thumbnail.active {
@@ -825,7 +872,7 @@ onMounted(async () => {
 .thumbnail img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
 }
 
 .product-info {

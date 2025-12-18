@@ -66,6 +66,7 @@ public class SecurityConfig {
                         .mvcMatchers("/api/comments/**").permitAll()
                         .mvcMatchers("/api/discussions/**").permitAll()
                         .mvcMatchers("/api/cart/**").permitAll()
+                        .mvcMatchers("/api/assistant/**").permitAll()
                         .mvcMatchers("/uploads/**").permitAll()
                         .anyRequest().authenticated())
                 .authenticationProvider(authenticationProvider())

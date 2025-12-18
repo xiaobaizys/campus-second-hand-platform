@@ -82,6 +82,36 @@ export const useProductStore = defineStore('product', () => {
           product.images = [];
         }
         
+        // 确保卖家信息兼容不同页面的数据结构需求
+        // 首先检查sellerId是否存在，因为sellerId是必填字段
+        if (product.sellerId) {
+          // 如果有sellerId，确保同时有seller对象和直接的sellerName、sellerAvatar字段
+          product.seller = {
+            id: product.sellerId,
+            username: product.sellerName || '未知卖家',
+            avatar: product.sellerAvatar || ''
+          };
+          product.sellerName = product.sellerName || '未知卖家';
+          product.sellerAvatar = product.sellerAvatar || '';
+        } 
+        // 如果有seller对象，确保同时有直接的sellerId、sellerName和sellerAvatar字段
+        else if (product.seller) {
+          product.sellerId = product.seller.id;
+          product.sellerName = product.seller.username || '未知卖家';
+          product.sellerAvatar = product.seller.avatar || '';
+        } 
+        // 如果两者都没有，设置默认值
+        else {
+          product.sellerId = 0;
+          product.sellerName = '未知卖家';
+          product.sellerAvatar = '';
+          product.seller = {
+            id: 0,
+            username: '未知卖家',
+            avatar: ''
+          };
+        }
+        
         return product;
       })
       
@@ -150,6 +180,33 @@ export const useProductStore = defineStore('product', () => {
         productData.images = [];
       }
       
+      // 确保卖家信息兼容不同页面的数据结构需求
+      // 如果有sellerName和sellerAvatar字段，确保同时有seller对象
+      if (productData.sellerName || productData.sellerAvatar) {
+        productData.seller = {
+          id: productData.sellerId || 0,
+          username: productData.sellerName || '未知卖家',
+          avatar: productData.sellerAvatar || ''
+        };
+      } 
+      // 如果有seller对象，确保同时有直接的sellerName和sellerAvatar字段
+      else if (productData.seller) {
+        productData.sellerId = productData.seller.id;
+        productData.sellerName = productData.seller.username || '未知卖家';
+        productData.sellerAvatar = productData.seller.avatar || '';
+      } 
+      // 如果两者都没有，设置默认值
+      else {
+        productData.sellerId = 0;
+        productData.sellerName = '未知卖家';
+        productData.sellerAvatar = '';
+        productData.seller = {
+          id: 0,
+          username: '未知卖家',
+          avatar: ''
+        };
+      }
+      
       currentProduct.value = productData
       return response
     } catch (err: any) {
@@ -195,6 +252,37 @@ export const useProductStore = defineStore('product', () => {
           }
           product.images = imageUrls;
         }
+        
+        // 确保卖家信息兼容不同页面的数据结构需求
+        // 首先检查sellerId是否存在，因为sellerId是必填字段
+        if (product.sellerId) {
+          // 如果有sellerId，确保同时有seller对象和直接的sellerName、sellerAvatar字段
+          product.seller = {
+            id: product.sellerId,
+            username: product.sellerName || '未知卖家',
+            avatar: product.sellerAvatar || ''
+          };
+          product.sellerName = product.sellerName || '未知卖家';
+          product.sellerAvatar = product.sellerAvatar || '';
+        } 
+        // 如果有seller对象，确保同时有直接的sellerId、sellerName和sellerAvatar字段
+        else if (product.seller) {
+          product.sellerId = product.seller.id;
+          product.sellerName = product.seller.username || '未知卖家';
+          product.sellerAvatar = product.seller.avatar || '';
+        } 
+        // 如果两者都没有，设置默认值
+        else {
+          product.sellerId = 0;
+          product.sellerName = '未知卖家';
+          product.sellerAvatar = '';
+          product.seller = {
+            id: 0,
+            username: '未知卖家',
+            avatar: ''
+          };
+        }
+        
         return product;
       })
       
@@ -256,6 +344,34 @@ export const useProductStore = defineStore('product', () => {
           }
           product.images = imageUrls;
         }
+        
+        // 确保卖家信息兼容不同页面的数据结构需求
+        // 如果有sellerName和sellerAvatar字段，确保同时有seller对象
+        if (product.sellerName || product.sellerAvatar) {
+          product.seller = {
+            id: product.sellerId || 0,
+            username: product.sellerName || '未知卖家',
+            avatar: product.sellerAvatar || ''
+          };
+        } 
+        // 如果有seller对象，确保同时有直接的sellerName和sellerAvatar字段
+        else if (product.seller) {
+          product.sellerId = product.seller.id;
+          product.sellerName = product.seller.username || '未知卖家';
+          product.sellerAvatar = product.seller.avatar || '';
+        } 
+        // 如果两者都没有，设置默认值
+        else {
+          product.sellerId = 0;
+          product.sellerName = '未知卖家';
+          product.sellerAvatar = '';
+          product.seller = {
+            id: 0,
+            username: '未知卖家',
+            avatar: ''
+          };
+        }
+        
         return product;
       })
       
@@ -288,6 +404,34 @@ export const useProductStore = defineStore('product', () => {
         if (product.imageUrls && !product.images) {
           product.images = product.imageUrls
         }
+        
+        // 确保卖家信息兼容不同页面的数据结构需求
+        // 如果有sellerName和sellerAvatar字段，确保同时有seller对象
+        if (product.sellerName || product.sellerAvatar) {
+          product.seller = {
+            id: product.sellerId || 0,
+            username: product.sellerName || '未知卖家',
+            avatar: product.sellerAvatar || ''
+          };
+        } 
+        // 如果有seller对象，确保同时有直接的sellerName和sellerAvatar字段
+        else if (product.seller) {
+          product.sellerId = product.seller.id;
+          product.sellerName = product.seller.username || '未知卖家';
+          product.sellerAvatar = product.seller.avatar || '';
+        } 
+        // 如果两者都没有，设置默认值
+        else {
+          product.sellerId = 0;
+          product.sellerName = '未知卖家';
+          product.sellerAvatar = '';
+          product.seller = {
+            id: 0,
+            username: '未知卖家',
+            avatar: ''
+          };
+        }
+        
         return product
       })
       
@@ -335,6 +479,34 @@ export const useProductStore = defineStore('product', () => {
           }
           product.images = imageUrls;
         }
+        
+        // 确保卖家信息兼容不同页面的数据结构需求
+        // 如果有sellerName和sellerAvatar字段，确保同时有seller对象
+        if (product.sellerName || product.sellerAvatar) {
+          product.seller = {
+            id: product.sellerId || 0,
+            username: product.sellerName || '未知卖家',
+            avatar: product.sellerAvatar || ''
+          };
+        } 
+        // 如果有seller对象，确保同时有直接的sellerName和sellerAvatar字段
+        else if (product.seller) {
+          product.sellerId = product.seller.id;
+          product.sellerName = product.seller.username || '未知卖家';
+          product.sellerAvatar = product.seller.avatar || '';
+        } 
+        // 如果两者都没有，设置默认值
+        else {
+          product.sellerId = 0;
+          product.sellerName = '未知卖家';
+          product.sellerAvatar = '';
+          product.seller = {
+            id: 0,
+            username: '未知卖家',
+            avatar: ''
+          };
+        }
+        
         return product;
       })
       
@@ -386,6 +558,33 @@ export const useProductStore = defineStore('product', () => {
           newProduct.images = imageUrls;
         }
         
+        // 确保卖家信息兼容不同页面的数据结构需求
+        // 如果有sellerName和sellerAvatar字段，确保同时有seller对象
+        if (newProduct.sellerName || newProduct.sellerAvatar) {
+          newProduct.seller = {
+            id: newProduct.sellerId || 0,
+            username: newProduct.sellerName || '未知卖家',
+            avatar: newProduct.sellerAvatar || ''
+          };
+        } 
+        // 如果有seller对象，确保同时有直接的sellerName和sellerAvatar字段
+        else if (newProduct.seller) {
+          newProduct.sellerId = newProduct.seller.id;
+          newProduct.sellerName = newProduct.seller.username || '未知卖家';
+          newProduct.sellerAvatar = newProduct.seller.avatar || '';
+        } 
+        // 如果两者都没有，设置默认值
+        else {
+          newProduct.sellerId = 0;
+          newProduct.sellerName = '未知卖家';
+          newProduct.sellerAvatar = '';
+          newProduct.seller = {
+            id: 0,
+            username: '未知卖家',
+            avatar: ''
+          };
+        }
+        
         products.value.unshift(newProduct)
       }
       return response
@@ -433,6 +632,33 @@ export const useProductStore = defineStore('product', () => {
             imageUrls = [];
           }
           updatedProduct.images = imageUrls;
+        }
+        
+        // 确保卖家信息兼容不同页面的数据结构需求
+        // 如果有sellerName和sellerAvatar字段，确保同时有seller对象
+        if (updatedProduct.sellerName || updatedProduct.sellerAvatar) {
+          updatedProduct.seller = {
+            id: updatedProduct.sellerId || 0,
+            username: updatedProduct.sellerName || '未知卖家',
+            avatar: updatedProduct.sellerAvatar || ''
+          };
+        } 
+        // 如果有seller对象，确保同时有直接的sellerName和sellerAvatar字段
+        else if (updatedProduct.seller) {
+          updatedProduct.sellerId = updatedProduct.seller.id;
+          updatedProduct.sellerName = updatedProduct.seller.username || '未知卖家';
+          updatedProduct.sellerAvatar = updatedProduct.seller.avatar || '';
+        } 
+        // 如果两者都没有，设置默认值
+        else {
+          updatedProduct.sellerId = 0;
+          updatedProduct.sellerName = '未知卖家';
+          updatedProduct.sellerAvatar = '';
+          updatedProduct.seller = {
+            id: 0,
+            username: '未知卖家',
+            avatar: ''
+          };
         }
         
         const index = products.value.findIndex(p => p.id === id)

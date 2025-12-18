@@ -112,7 +112,7 @@
 
 <script setup lang="ts">
 import { ref, onMounted, computed } from 'vue'
-import { useRouter, useRoute } from 'vue-router'
+import { useRouter, useRoute, onBeforeRouteUpdate } from 'vue-router'
 import { ElMessage } from 'element-plus'
 import { ArrowDown } from '@element-plus/icons-vue'
 import AppHeader from '@/components/AppHeader.vue'
@@ -188,7 +188,7 @@ const fetchProducts = async () => {
       search: searchQuery.value,
       sortBy: sortParam,
       sortDir: sortDir,
-      status: 'active', // 只获取活跃状态的商品
+      // 移除status参数，获取所有状态的商品，或让后端处理默认状态
     }
 
     await productStore.fetchProducts(params)
@@ -570,24 +570,41 @@ const handlePopularSearchSelect = (keyword: string) => {
 }
 
 // 初始化
-onMounted(async () => {
+const initPage = async () => {
   // 从路由参数中获取分类ID和搜索关键词
   const categoryId = route.query.category
   const searchKeyword = route.query.search
 
   if (categoryId) {
     selectedCategory.value = Number(categoryId)
+  } else {
+    selectedCategory.value = undefined
   }
 
   if (searchKeyword) {
     searchQuery.value = String(searchKeyword)
+  } else {
+    searchQuery.value = ''
   }
+
+  // 重置页码
+  currentPage.value = 1
 
   // 获取分类列表
   await fetchCategories()
 
   // 获取商品列表
   await fetchProducts()
+}
+
+// 组件挂载时初始化
+onMounted(async () => {
+  await initPage()
+})
+
+// 路由更新时重新初始化（确保每次进入页面都获取最新数据）
+onBeforeRouteUpdate(async () => {
+  await initPage()
 })
 </script>
 
@@ -688,8 +705,9 @@ onMounted(async () => {
 .product-image img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
   transition: transform 0.3s;
+  background-color: #f5f7fa;
 }
 
 .product-card:hover .product-image img {
@@ -705,9 +723,12 @@ onMounted(async () => {
   font-weight: 500;
   margin-bottom: 8px;
   color: #303133;
+  line-height: 1.4;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
-  white-space: nowrap;
 }
 
 .product-price {
@@ -777,18 +798,37 @@ onMounted(async () => {
   }
 
   .products-grid {
-    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-    gap: 10px;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 15px;
   }
 
   .product-card {
     margin-bottom: 0;
     border-radius: 8px;
     overflow: hidden;
+    padding: 8px;
   }
 
   .product-image {
-    height: 150px;
+    height: 180px;
+  }
+
+  .product-title {
+    font-size: 14px;
+    -webkit-line-clamp: 2;
+  }
+
+  .product-price {
+    font-size: 16px;
+  }
+
+  .product-meta,
+  .product-seller {
+    font-size: 12px;
+  }
+
+  .product-info {
+    padding: 10px;
   }
 
   .product-info {

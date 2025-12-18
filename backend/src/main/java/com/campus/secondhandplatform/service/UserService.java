@@ -49,14 +49,31 @@ public class UserService {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("用户不存在"));
 
-        user.setUsername(userDetails.getUsername());
-        user.setEmail(userDetails.getEmail());
-        user.setRealName(userDetails.getRealName());
-        user.setPhoneNumber(userDetails.getPhoneNumber());
-        user.setStudentId(userDetails.getStudentId());
-        user.setSchoolName(userDetails.getSchoolName());
-        user.setCampusName(userDetails.getCampusName());
-        user.setAvatarUrl(userDetails.getAvatarUrl());
+        // 只更新非空字段，避免覆盖已有数据
+        if (userDetails.getUsername() != null) {
+            user.setUsername(userDetails.getUsername());
+        }
+        if (userDetails.getEmail() != null) {
+            user.setEmail(userDetails.getEmail());
+        }
+        if (userDetails.getRealName() != null) {
+            user.setRealName(userDetails.getRealName());
+        }
+        if (userDetails.getPhoneNumber() != null) {
+            user.setPhoneNumber(userDetails.getPhoneNumber());
+        }
+        if (userDetails.getStudentId() != null) {
+            user.setStudentId(userDetails.getStudentId());
+        }
+        if (userDetails.getSchoolName() != null) {
+            user.setSchoolName(userDetails.getSchoolName());
+        }
+        if (userDetails.getCampusName() != null) {
+            user.setCampusName(userDetails.getCampusName());
+        }
+        if (userDetails.getAvatarUrl() != null) {
+            user.setAvatarUrl(userDetails.getAvatarUrl());
+        }
 
         return userRepository.save(user);
     }

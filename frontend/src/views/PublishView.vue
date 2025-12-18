@@ -402,8 +402,9 @@ onMounted(async () => {
 const loadProductForEdit = async (productId: number) => {
   try {
     const product = await productApi.getProductById(productId)
-    if (product && product.data) {
-      const productData = product.data
+    if (product) {
+      // 请求拦截器已经处理了数据，product直接是商品数据
+      const productData = product
       
       // 填充表单数据
       publishForm.title = productData.title || ''
@@ -416,10 +417,12 @@ const loadProductForEdit = async (productId: number) => {
       publishForm.contactInfo = productData.contactInfo === '平台私信' ? '' : productData.contactInfo || ''
       
       // 处理图片
-      if (productData.images && productData.images.length > 0) {
-        publishForm.images = productData.images
+      // API返回的图片字段名可能是imageUrls或images
+      const productImages = productData.imageUrls || productData.images || []
+      if (productImages.length > 0) {
+        publishForm.images = productImages
         // 转换为UploadUserFile格式
-        fileList.value = productData.images.map((imageUrl: string) => ({
+        fileList.value = productImages.map((imageUrl: string) => ({
           url: imageUrl,
           name: `image-${Math.random().toString(36).substring(2, 11)}`,
           status: 'success' as const

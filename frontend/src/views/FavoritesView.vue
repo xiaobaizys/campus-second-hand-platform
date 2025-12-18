@@ -456,8 +456,9 @@ onMounted(() => {
 .product-image img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
   transition: transform 0.3s;
+  background-color: #f5f7fa;
 }
 
 .product-image:hover img {

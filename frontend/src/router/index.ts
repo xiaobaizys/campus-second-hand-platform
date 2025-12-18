@@ -101,6 +101,12 @@ const router = createRouter({
       component: () => import('@/views/DiscussionDetailView.vue'),
       meta: { title: '帖子详情' },
     },
+    {
+      path: '/assistant',
+      name: 'assistant',
+      component: () => import('@/views/AssistantView.vue'),
+      meta: { title: '校园助手' },
+    },
   ],
 })
 

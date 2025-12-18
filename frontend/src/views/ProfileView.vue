@@ -396,7 +396,7 @@ const profileRules: FormRules = {
   realName: [{ required: true, message: '请输入真实姓名', trigger: 'blur' }],
   email: [
     { required: true, message: '请输入邮箱', trigger: 'blur' },
-    { type: 'email', message: '请输入正确的邮箱格式', trigger: 'blur' },
+    { pattern: /^[^\s@]+@[^\s@]+\.[^\s@]+$/, message: '请输入正确的邮箱格式', trigger: 'blur' },
   ],
   phone: [{ pattern: /^1[3-9]\d{9}$/, message: '请输入正确的手机号格式', trigger: 'blur' }],
 }
@@ -614,20 +614,31 @@ const updateProfile = async () => {
     if (valid) {
       try {
         // 调用userStore更新用户信息
-        await userStore.updateUserProfile({
+        console.log('开始更新用户信息，提交的数据:', {
           username: profileForm.username,
           realName: profileForm.realName,
           email: profileForm.email,
-          phone: profileForm.phone,
-          bio: profileForm.bio,
+          phoneNumber: profileForm.phone,
           avatarUrl: profileForm.avatarUrl,
-          school: profileForm.school,
-          major: profileForm.major,
-          grade: profileForm.grade,
+          schoolName: profileForm.school,
         })
+
+        const result = await userStore.updateUserProfile({
+          username: profileForm.username,
+          realName: profileForm.realName,
+          email: profileForm.email,
+          phoneNumber: profileForm.phone,
+          avatarUrl: profileForm.avatarUrl,
+          schoolName: profileForm.school,
+        })
+
+        console.log('更新用户信息成功，返回结果:', result)
         ElMessage.success('个人信息更新成功')
       } catch (error) {
-        ElMessage.error('更新个人信息失败')
+        // 获取具体错误信息
+        console.error('更新用户信息失败，详细错误:', error)
+        const errorMessage = (error as any).error || (error as any).message || '更新个人信息失败'
+        ElMessage.error(errorMessage)
       }
     }
   })

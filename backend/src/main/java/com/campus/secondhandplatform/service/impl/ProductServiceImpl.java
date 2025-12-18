@@ -101,7 +101,7 @@ public class ProductServiceImpl implements ProductService {
         
         return productRepository.advancedSearchProducts(
                 keyword, categoryId, minPrice, maxPrice, location, 
-                isNegotiable, isNew, deliveryMethod, Product.ProductStatus.AVAILABLE, pageable);
+                isNegotiable, isNew, deliveryMethod, null, pageable);
     }
     
     @Override

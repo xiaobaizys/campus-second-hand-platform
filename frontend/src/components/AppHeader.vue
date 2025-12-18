@@ -10,6 +10,7 @@
           <router-link to="/" class="nav-item">首页</router-link>
           <router-link to="/products" class="nav-item">商品列表</router-link>
           <router-link to="/community" class="nav-item">社区讨论</router-link>
+          <router-link to="/assistant" class="nav-item">校园助手</router-link>
           <router-link to="/about" class="nav-item">关于我们</router-link>
           <!-- 管理员专属导航 -->
           <router-link v-if="isAdmin" to="/admin" class="nav-item admin-nav">管理后台</router-link>

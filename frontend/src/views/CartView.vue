@@ -384,7 +384,8 @@ onMounted(() => {
 .product-image img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
+  background-color: #f5f7fa;
 }
 
 .product-info {

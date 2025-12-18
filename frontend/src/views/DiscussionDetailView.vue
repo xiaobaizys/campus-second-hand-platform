@@ -37,6 +37,18 @@
                 </div>
               </div>
             </div>
+            <!-- 联系方式 -->
+            <div class="contact-info" v-if="canViewContactInfo">
+              <h3>联系方式</h3>
+              <div class="contact-detail">
+                <el-icon><Phone /></el-icon>
+                <span>{{ userStore.user?.phone || '暂无联系方式' }}</span>
+              </div>
+              <div class="contact-detail">
+                <el-icon><Message /></el-icon>
+                <span>{{ userStore.user?.email || '暂无邮箱' }}</span>
+              </div>
+            </div>
           </div>
 
           <!-- 帖子标签 -->
@@ -230,7 +242,7 @@
 import { ref, onMounted, watch, computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { ElMessage, ElMessageBox, FormInstance } from 'element-plus'
-import { StarFilled, Collection, ChatDotRound, View, Edit, Delete } from '@element-plus/icons-vue'
+import { StarFilled, Collection, ChatDotRound, View, Edit, Delete, Phone, Message } from '@element-plus/icons-vue'
 import { communityApi } from '@/api/community'
 import type { Discussion, Comment } from '@/api/community'
 import AppHeader from '@/components/AppHeader.vue'
@@ -271,6 +283,13 @@ const editComment = ref({
 const canEditOrDelete = computed(() => {
   if (!discussion.value || !userStore.user) return false
   // 只有讨论作者或管理员可以编辑/删除
+  return discussion.value.user?.id === userStore.user.id || userStore.user.role === 'ADMIN'
+})
+
+// 计算属性：判断当前用户是否可以查看联系方式
+const canViewContactInfo = computed(() => {
+  if (!discussion.value || !userStore.user) return false
+  // 只有讨论作者或管理员可以查看联系方式
   return discussion.value.user?.id === userStore.user.id || userStore.user.role === 'ADMIN'
 })
 
@@ -678,6 +697,35 @@ watch(
 
 .discussion-meta {
   margin-bottom: 15px;
+  background: #f8f9fa;
+  padding: 15px;
+  border-radius: 8px;
+}
+
+.contact-info {
+  margin-top: 15px;
+  padding-top: 15px;
+  border-top: 1px solid #e9ecef;
+}
+
+.contact-info h3 {
+  font-size: 16px;
+  font-weight: 600;
+  color: #303133;
+  margin-bottom: 10px;
+}
+
+.contact-detail {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  color: #606266;
+}
+
+.contact-detail .el-icon {
+  color: #409eff;
+  font-size: 16px;
 }
 
 .user-info {
