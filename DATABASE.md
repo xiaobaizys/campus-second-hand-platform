@@ -52,6 +52,12 @@ erDiagram
 
 实际的实体关系图请参考 `mysql/campus_second_hand.sql` 文件中的表结构定义。
 
+![132094eba9e14eb6a150c6ca7c7dd3f](D:\A\9\campus-second-hand-platform\mysql\132094eba9e14eb6a150c6ca7c7dd3f.png)
+
+![plantuml-diagram](D:\A\9\campus-second-hand-platform\mysql\plantuml-diagram.png)
+
+![plantuml-diagram1](D:\A\9\campus-second-hand-platform\mysql\plantuml-diagram1.png)
+
 ## 4. 详细表结构
 
 ### 4.1 用户相关表
