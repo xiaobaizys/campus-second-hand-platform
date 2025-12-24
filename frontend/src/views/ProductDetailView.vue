@@ -338,7 +338,7 @@ const fetchComments = async () => {
   loadingComments.value = true
   try {
     const response = await commentApi.getComments(product.value.id)
-    comments.value = response.data?.content || []
+    comments.value = response.content || []
   } catch (error) {
     console.error('获取评论失败:', error)
     // 如果API调用失败，使用模拟数据

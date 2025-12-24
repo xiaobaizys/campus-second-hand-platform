@@ -321,25 +321,12 @@ const viewOrderDetail = async (order: any) => {
 }
 
 // 付款
-const payOrder = async (order: any) => {
-  try {
-    await ElMessageBox.confirm('确认付款该订单？', '提示', {
-      confirmButtonText: '确定',
-      cancelButtonText: '取消',
-      type: 'warning'
-    })
-    
-    // 更新订单状态为已付款
-    await orderStore.payOrder(order.id, 'BALANCE')
-    
-    ElMessage.success('付款成功')
-    fetchOrders() // 刷新订单数据
-  } catch (error) {
-    if (error !== 'cancel') {
-      console.error('付款失败:', error)
-      ElMessage.error('付款失败')
-    }
-  }
+const payOrder = (order: any) => {
+  // 跳转到创建订单页面
+  router.push({
+    path: '/order/create',
+    query: { productId: order.productId }
+  })
 }
 
 // 取消订单

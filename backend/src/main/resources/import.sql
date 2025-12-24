@@ -2,23 +2,23 @@
 -- 密码都是 "password" 的BCrypt加密值
 
 -- 管理员用户
-INSERT INTO users (id, username, password, email, role, is_active) 
+INSERT IGNORE INTO users (id, username, password, email, role, is_active) 
 VALUES (1, 'admin', '$2a$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'admin@campus.com', 'ADMIN', 1);
 
 -- 测试用户
-INSERT INTO users (id, username, password, email, role, is_active) 
+INSERT IGNORE INTO users (id, username, password, email, role, is_active) 
 VALUES (2, 'test', '$2a$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'test@example.com', 'USER', 1);
 
 -- 卖家用户
-INSERT INTO users (id, username, password, email, role, is_active) 
+INSERT IGNORE INTO users (id, username, password, email, role, is_active) 
 VALUES (3, 'seller1', '$2a$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'seller1@campus.com', 'USER', 1);
 
 -- 买家用户
-INSERT INTO users (id, username, password, email, role, is_active) 
+INSERT IGNORE INTO users (id, username, password, email, role, is_active) 
 VALUES (4, 'buyer1', '$2a$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'buyer1@campus.com', 'USER', 1);
 
 -- 添加分类数据
-INSERT INTO categories (id, name, description, icon_url, sort_order, is_active) VALUES
+INSERT IGNORE INTO categories (id, name, description, icon_url, sort_order, is_active) VALUES
 (1, '数码产品', '手机、电脑、平板等数码设备', '/icons/digital.png', 1, 1),
 (2, '图书教材', '教材、参考书、小说等图书', '/icons/books.png', 2, 1),
 (3, '生活用品', '生活日用品、装饰品等', '/icons/lifestyle.png', 3, 1),
@@ -29,7 +29,7 @@ INSERT INTO categories (id, name, description, icon_url, sort_order, is_active) 
 (8, '其他', '其他类型的物品', '/icons/other.png', 8, 1);
 
 -- 添加商品数据
-INSERT INTO products (id, title, description, price, original_price, image_urls, category_id, seller_id, status, view_count, like_count, is_negotiable, is_new, delivery_method, location, contact_info) VALUES
+INSERT IGNORE INTO products (id, title, description, price, original_price, image_urls, category_id, seller_id, status, view_count, like_count, is_negotiable, is_new, delivery_method, location, contact_info) VALUES
 -- 数码产品
 (1, 'iPhone 13 128GB', '99新iPhone 13，128GB存储空间，电池健康95%，配件齐全', 4599.00, 5999.00, '/images/iphone13.jpg', 1, 3, 'AVAILABLE', 120, 25, true, false, '自提', '校园内', '13800138000'),
 (2, 'MacBook Air M1 2020', '轻薄便携，M1芯片性能强劲，8GB+256GB，几乎全新', 6999.00, 9499.00, '/images/macbookair.jpg', 1, 3, 'AVAILABLE', 85, 18, true, false, '自提', '校园内', '13800138000'),

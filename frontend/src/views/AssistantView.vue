@@ -12,7 +12,7 @@
           <!-- 聊天记录 -->
           <div class="chat-messages" ref="chatMessages">
             <!-- 系统欢迎消息 -->
-            <div class="message system-message">
+            <div class="message system-message" v-if="messages.length === 0">
               <div class="message-content">
                 <div class="message-header">
                   <el-avatar src="" class="assistant-avatar">AI</el-avatar>
@@ -56,6 +56,7 @@
           <div class="message-input-area">
             <el-input v-model="inputMessage" type="textarea" :rows="3" placeholder="请输入您的问题..." resize="none" @keyup.enter.exact="sendMessage" @keyup.enter.shift="inputMessage += '\n'" />
             <div class="input-actions">
+              <el-button type="warning" @click="clearChatHistory"> 清空历史 </el-button>
               <el-button type="primary" @click="sendMessage" :loading="loading"> 发送 </el-button>
             </div>
           </div>
@@ -72,10 +73,24 @@ import { useUserStore } from '@/store/user'
 import AppHeader from '@/components/AppHeader.vue'
 import AppFooter from '@/components/AppFooter.vue'
 import { assistantApi } from '@/api/assistant'
+import { ElMessage } from 'element-plus'
 
 // 用户信息
 const userStore = useUserStore()
 const userAvatar = computed(() => userStore.user?.avatar || '')
+
+// 会话ID管理
+const SESSION_ID_KEY = 'campus_assistant_session_id'
+const getSessionId = (): string => {
+  let sessionId = localStorage.getItem(SESSION_ID_KEY)
+  if (!sessionId) {
+    sessionId = `session_${Date.now()}_${Math.random().toString(36).substring(2, 9)}`
+    localStorage.setItem(SESSION_ID_KEY, sessionId)
+  }
+  return sessionId
+}
+
+const sessionId = ref(getSessionId())
 
 // 聊天相关
 const messages = ref<Array<{ role: 'user' | 'assistant'; content: string; timestamp: number }>>([])
@@ -93,6 +108,24 @@ const currentTime = computed(() => {
 const formatTime = (timestamp: number) => {
   const date = new Date(timestamp)
   return date.toLocaleTimeString()
+}
+
+// 加载聊天记录
+const loadChatHistory = async () => {
+  try {
+    const response = await assistantApi.getHistory(sessionId.value)
+    if (response.chatHistory && response.chatHistory.length > 0) {
+      // 转换聊天记录格式
+      messages.value = response.chatHistory.map((msg: any) => ({
+        role: msg.role === 'user' ? 'user' : 'assistant',
+        content: msg.content,
+        timestamp: new Date(msg.timestamp).getTime()
+      }))
+      await scrollToBottom()
+    }
+  } catch (error) {
+    console.error('Failed to load chat history:', error)
+  }
 }
 
 // 发送消息
@@ -116,26 +149,61 @@ const sendMessage = async () => {
   loading.value = true
 
   try {
-    // 调用后端API获取AI回复
-    const response = await assistantApi.chat(messageContent)
+    // 调用后端API获取AI回复，传递会话ID
+    const response = await assistantApi.chat(messageContent, sessionId.value)
 
-    // 添加AI回复到聊天记录
-    messages.value.push({
-      role: 'assistant',
-      content: response.content || '抱歉，我暂时无法回答这个问题，请稍后再试。',
-      timestamp: Date.now(),
-    })
-  } catch (error) {
+    // 更新聊天记录
+    if (response.chatHistory) {
+      messages.value = response.chatHistory.map((msg: any) => ({
+        role: msg.role === 'user' ? 'user' : 'assistant',
+        content: msg.content,
+        timestamp: new Date(msg.timestamp).getTime()
+      }))
+    } else {
+      // 兼容旧版API返回
+      messages.value.push({
+        role: 'assistant',
+        content: response.content || '抱歉，我暂时无法回答这个问题，请稍后再试。',
+        timestamp: Date.now(),
+      })
+    }
+  } catch (error: any) {
+    // 优化错误处理，给出友好提示
     console.error('Failed to get AI response:', error)
+    
+    let errorMessage = '抱歉，服务器出现问题，请稍后再试。'
+    if (error.code === 'ECONNABORTED') {
+      errorMessage = '请求超时，请检查网络连接或稍后再试。'
+    } else if (error.response) {
+      // 服务器返回了错误状态码
+      errorMessage = `抱歉，服务器错误 (${error.response.status})，请稍后再试。`
+    } else if (error.request) {
+      // 请求已发出但没有收到响应
+      errorMessage = '网络连接失败，请检查网络设置。'
+    }
+    
     messages.value.push({
       role: 'assistant',
-      content: '抱歉，服务器出现问题，请稍后再试。',
+      content: errorMessage,
       timestamp: Date.now(),
     })
   } finally {
     loading.value = false
     // 滚动到底部
     await scrollToBottom()
+  }
+}
+
+// 清空聊天记录
+const clearChatHistory = async () => {
+  try {
+    await assistantApi.clearHistory(sessionId.value)
+    messages.value = []
+    ElMessage.success('聊天记录已清空')
+    await scrollToBottom()
+  } catch (error) {
+    console.error('Failed to clear chat history:', error)
+    ElMessage.error('清空聊天记录失败')
   }
 }
 
@@ -147,9 +215,10 @@ const scrollToBottom = async () => {
   }
 }
 
-// 组件挂载时滚动到底部
-onMounted(() => {
-  scrollToBottom()
+// 组件挂载时加载聊天记录
+onMounted(async () => {
+  await loadChatHistory()
+  await scrollToBottom()
 })
 </script>
 

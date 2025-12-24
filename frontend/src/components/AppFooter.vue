@@ -29,9 +29,9 @@
         <div class="footer-section">
           <h3>联系方式</h3>
           <div class="contact-info">
-            <p><el-icon><Message /></el-icon> contact@campus-secondhand.com</p>
-            <p><el-icon><Phone /></el-icon> 400-123-4567</p>
-            <p><el-icon><Location /></el-icon> 北京市海淀区学院路</p>
+            <p><el-icon><Message /></el-icon> zys6606@163.com</p>
+            <p><el-icon><Phone /></el-icon> 15992236606</p>
+            <p><el-icon><Location /></el-icon> 广州应用科技学院</p>
           </div>
         </div>
       </div>

@@ -1,0 +1,41 @@
+[
+  {
+    "title": "校园二手交易平台",
+    "description": "让闲置物品流转起来，创造更多价值",
+    "image": "/images/carousel1.jpg",
+    "primaryAction": {
+      "text": "浏览商品",
+      "action": "/products"
+    },
+    "secondaryAction": {
+      "text": "发布商品",
+      "action": "/publish"
+    }
+  },
+  {
+    "title": "低价好货，应有尽有",
+    "description": "从教材到电子产品，从服装到生活用品，满足你的各种需求",
+    "image": "/images/carousel2.jpg",
+    "primaryAction": {
+      "text": "立即抢购",
+      "action": "/products"
+    },
+    "secondaryAction": {
+      "text": "了解更多",
+      "action": "/about"
+    }
+  },
+  {
+    "title": "安全交易，放心购买",
+    "description": "实名认证，线下交易，让你的购物更安全",
+    "image": "/images/carousel3.jpg",
+    "primaryAction": {
+      "text": "去认证",
+      "action": "/profile"
+    },
+    "secondaryAction": {
+      "text": "浏览规则",
+      "action": "/about"
+    }
+  }
+]

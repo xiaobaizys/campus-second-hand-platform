@@ -364,8 +364,8 @@ public class OrderServiceImpl implements OrderService {
             return null;
         }
         
-        // 检查订单状态：只有已确认状态的订单可以支付
-        if (order.getStatus() != Order.OrderStatus.CONFIRMED) {
+        // 检查订单状态：允许支付待处理或已确认状态的订单
+        if (order.getStatus() != Order.OrderStatus.PENDING && order.getStatus() != Order.OrderStatus.CONFIRMED) {
             return null;
         }
         

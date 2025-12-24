@@ -13,7 +13,7 @@
             <h2>平台简介</h2>
             <p>校园二手交易平台是为大学生提供安全、便捷的二手物品交易服务的平台。我们致力于打造一个值得信赖的交易环境，让同学们能够轻松地买卖二手物品，实现资源的有效利用。</p>
           </section>
-          
+
           <section class="about-section">
             <h2>我们的使命</h2>
             <p>通过提供安全、便捷的二手交易平台，我们希望：</p>
@@ -24,7 +24,7 @@
               <li>帮助同学们以更低成本获取所需物品</li>
             </ul>
           </section>
-          
+
           <section class="about-section">
             <h2>平台特色</h2>
             <div class="features">
@@ -50,21 +50,21 @@
               </div>
             </div>
           </section>
-          
+
           <section class="about-section">
             <h2>联系我们</h2>
             <div class="contact-info">
               <div class="contact-item">
                 <el-icon><Message /></el-icon>
-                <span>邮箱：contact@campus-secondhand.com</span>
+                <span>邮箱：zys6606@163.com</span>
               </div>
               <div class="contact-item">
                 <el-icon><Phone /></el-icon>
-                <span>电话：400-123-4567</span>
+                <span>电话：15992236606</span>
               </div>
               <div class="contact-item">
                 <el-icon><Location /></el-icon>
-                <span>地址：北京市海淀区学院路</span>
+                <span>地址：广州应用科技学院</span>
               </div>
             </div>
           </section>
@@ -201,33 +201,33 @@ import { Lock, CircleCheck, ChatDotRound, Location, Message, Phone } from '@elem
   .about-view {
     padding: 20px 0;
   }
-  
+
   .about-header h1 {
     font-size: 28px;
   }
-  
+
   .subtitle {
     font-size: 16px;
   }
-  
+
   .about-section {
     padding: 20px;
   }
-  
+
   .about-section h2 {
     font-size: 20px;
   }
-  
+
   .about-section p,
   .about-section li {
     font-size: 14px;
   }
-  
+
   .features {
     grid-template-columns: repeat(2, 1fr);
     gap: 20px;
   }
-  
+
   .contact-info {
     grid-template-columns: 1fr;
   }
@@ -237,19 +237,19 @@ import { Lock, CircleCheck, ChatDotRound, Location, Message, Phone } from '@elem
   .about-header h1 {
     font-size: 24px;
   }
-  
+
   .subtitle {
     font-size: 14px;
   }
-  
+
   .about-section {
     padding: 15px;
   }
-  
+
   .about-section h2 {
     font-size: 18px;
   }
-  
+
   .features {
     grid-template-columns: 1fr;
   }

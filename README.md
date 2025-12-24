@@ -44,9 +44,17 @@
 | Spring Security | 6.x | 安全框架 |
 | JWT | - | 身份认证 |
 | Spring Data JPA | - | ORM框架 |
-| MySQL | 8.x | 数据库 |
+| MySQL | 8.x | 关系型数据库 |
+| Redis | 7.x | 缓存数据库 |
 | Maven | 3.6+ | 构建工具 |
-| Java | 19+ | 开发语言 |
+| Java | 1.8+ | 开发语言 |
+
+### 2.3 AI 技术
+
+| 技术 | 用途 |
+|------|------|
+| 阿里云 DashScope API | 智能聊天助手 |
+| OkHttp | HTTP客户端 |
 
 ## 3. 项目结构
 
@@ -119,15 +127,16 @@ frontend/
 
 | 环境 | 版本 |
 |------|------|
-| Java | 19+ |
+| Java | 1.8+ |
 | Maven | 3.6+ |
 | Node.js | 16+ |
 | npm | 8+ |
 | MySQL | 8.x |
+| Redis | 7.x |
 
 ### 4.2 后端环境搭建
 
-1. **安装Java 19+**
+1. **安装Java 1.8+**
    - 下载地址：<https://www.oracle.com/java/technologies/downloads/>
    - 配置JAVA_HOME环境变量
 
@@ -137,21 +146,27 @@ frontend/
 
 3. **安装MySQL**
    - 下载地址：<https://dev.mysql.com/downloads/mysql/>
-   - 创建数据库：`campus_secondhand`
+   - 创建数据库：`campus_second_hand`
    - 配置数据库用户和密码
 
-4. **配置后端应用**
+4. **安装Redis**
+   - 下载地址：<https://redis.io/download/>
+   - 启动Redis服务：`redis-server`
+   - 默认端口：6379
+
+5. **配置后端应用**
    - 编辑 `backend/src/main/resources/application.properties`
    - 修改数据库连接信息
+   - 修改Redis连接信息（如需）
 
-5. **启动后端服务**
+6. **启动后端服务**
 
    ```bash
    cd backend
-   mvn spring-boot:run
+   $env:JAVA_HOME='D:\java1.8\jdk'; mvn spring-boot:run
    ```
 
-   - 后端服务默认运行在 `http://localhost:8080`
+   - 后端服务默认运行在 `http://localhost:8081`
 
 ### 4.3 前端环境搭建
 
@@ -171,7 +186,7 @@ frontend/
    npm run dev
    ```
 
-   - 前端服务默认运行在 `http://localhost:5173`
+   - 前端服务默认运行在 `http://localhost:3000`
 
 4. **构建生产版本**
 
@@ -312,10 +327,10 @@ frontend/
 
 ### 6.1 Swagger文档
 
-- 访问地址：`http://localhost:8080/swagger-ui.html`
+- 访问地址：`http://localhost:8081/swagger-ui/index.html`
 - 支持在线API测试
 - 包含所有RESTful API的详细说明
-- 健康检查：`http://localhost:8080/api/health`
+- 健康检查：`http://localhost:8081/api/health`
 
 ### 6.2 API命名规范
 
@@ -334,6 +349,18 @@ frontend/
   - `DELETE /api/products/{id}` - 删除商品
 
 ## 7. 数据库设计
+
+详细的数据库设计请参考 `DATABASE.md` 文件，该文件包含：
+
+- 数据库概述和设计原则
+- 实体关系图
+- 详细表结构
+- 索引设计
+- 数据库优化建议
+- 数据安全与备份策略
+- Redis数据库使用
+- 高可用性与故障容灾方案
+- 高并发高负载扩展方案
 
 ### 7.1 核心实体关系
 
@@ -360,24 +387,6 @@ frontend/
                 │
                 └─── 角色 (Role)
 ```
-
-### 7.2 主要实体类
-
-- `User` - 用户信息
-- `Product` - 商品信息
-- `Order` - 订单信息
-- `OrderItem` - 订单项
-- `Category` - 商品分类
-- `Discussion` - 社区讨论
-- `DiscussionLike` - 讨论点赞
-- `Comment` - 评论信息
-- `Favorite` - 收藏信息
-- `Message` - 消息信息
-- `CartItem` - 购物车项
-- `Announcement` - 公告
-- `PickupPoint` - 取货点
-- `PlatformParam` - 平台参数
-- `Role` - 角色信息
 
 ## 8. 开发规范
 
@@ -424,14 +433,32 @@ frontend/
 
 3. **配置文件外部化**
    - 可以将`application.properties`文件放在Jar包同级目录下，便于修改配置
-   - 支持通过命令行参数覆盖配置：`java -jar target/campus-second-hand-platform-1.0.0.jar --spring.datasource.url=jdbc:mysql://localhost:3306/campus_secondhand`
+   - 支持通过命令行参数覆盖配置：`java -jar target/campus-second-hand-platform-1.0.0.jar --spring.datasource.url=jdbc:mysql://localhost:3306/campus_second_hand --spring.redis.host=localhost`
 
 4. **Docker部署（可选）**
    - 创建Dockerfile
    - 构建Docker镜像
    - 运行Docker容器
+   - 注意：需要同时部署Redis服务，可以使用Docker Compose同时部署MySQL、Redis和应用服务
 
-### 9.2 前端部署
+### 9.2 Redis部署
+
+1. **二进制部署**
+   - 下载Redis二进制文件：<https://redis.io/download/>
+   - 解压并运行：`redis-server redis.conf`
+
+2. **Docker部署**
+
+   ```bash
+   docker run -d --name redis -p 6379:6379 redis:7
+   ```
+
+3. **配置优化**
+   - 设置密码：`requirepass your_password`
+   - 限制内存使用：`maxmemory 2gb`
+   - 设置内存淘汰策略：`maxmemory-policy allkeys-lru`
+
+### 9.3 前端部署
 
 1. **构建生产版本**
 
@@ -488,13 +515,20 @@ frontend/
 - 确保数据库用户有足够的权限（CREATE、ALTER、SELECT、INSERT、UPDATE、DELETE）
 - 确保数据库字符集设置正确（推荐使用UTF-8）
 
-### 10.4 前端构建失败
+### 10.4 Redis连接问题
+
+- 确保Redis服务已启动
+- 检查Redis连接配置是否正确（端口、密码等）
+- 确保Redis服务器允许远程连接（如需）
+- 检查防火墙设置，确保Redis端口（默认6379）开放
+
+### 10.5 前端构建失败
 
 - 确保Node.js版本符合要求（推荐Node.js 16+）
 - 尝试删除node_modules目录和package-lock.json文件，重新安装依赖
 - 检查控制台错误信息，根据错误提示修复问题
 
-### 10.5 权限问题
+### 10.6 权限问题
 
 - 检查用户角色是否正确配置
 - 检查JWT令牌是否有效
@@ -532,18 +566,21 @@ frontend/
 
 ## 14. 更新日志
 
-### v1.0.0 (2023-xx-xx)
+### v1.0.0 (2025-12-24)
 
 - 初始版本发布
-- 实现用户认证功能
-- 实现商品发布、浏览、搜索功能
-- 实现购物车和订单管理
-- 实现社区交流功能
+- 实现用户认证与授权功能
+- 实现商品发布、编辑、下架功能
+- 实现商品浏览与搜索功能
+- 实现购物车与订单管理功能
+- 实现社区交流（讨论、评论、点赞）功能
+- 实现收藏管理功能
 - 实现个人中心功能
 - 实现管理员后台功能
-- 实现数据统计功能
-- 实现取货点管理功能
-- 实现平台参数配置功能
+- 实现AI智能聊天助手功能
+- 实现Redis缓存机制
+- 实现高可用性与故障容灾方案
+- 实现高并发高负载扩展方案
 
 ---
 

@@ -176,7 +176,20 @@ const fetchReviews = async () => {
   loading.value = true
   try {
     const response = await commentApi.getComments(Number(props.productId))
-    reviews.value = response.data || []
+    // 将Comment类型转换为Review类型
+    reviews.value = (response.content || []).map((comment: Comment) => ({
+      id: comment.id,
+      userId: comment.user.id,
+      userName: comment.user.username,
+      userAvatar: comment.user.avatar,
+      rating: comment.rating,
+      content: comment.content,
+      images: [],
+      likes: 0,
+      createdAt: comment.createdAt,
+      sellerReply: null,
+      sellerReplyDate: null
+    }))
     filterReviews()
   } catch (error) {
     ElMessage.error('获取评论失败')
@@ -350,15 +363,15 @@ const submitReview = async () => {
         
         // 添加到评论列表
         reviews.value.unshift({
-          id: response.data.id,
-          userId: response.data.user.id,
-          userName: response.data.user.username,
-          userAvatar: response.data.user.avatar,
-          rating: response.data.rating,
-          content: response.data.content,
+          id: response.id,
+          userId: response.user.id,
+          userName: response.user.username,
+          userAvatar: response.user.avatar,
+          rating: response.rating,
+          content: response.content,
           images: [],
           likes: 0,
-          createdAt: response.data.createdAt,
+          createdAt: response.createdAt,
           sellerReply: null,
           sellerReplyDate: null
         })
@@ -373,7 +386,7 @@ const submitReview = async () => {
         }
         
         ElMessage.success('评价提交成功')
-        emit('review-submitted', response.data)
+        emit('review-submitted', response)
       } catch (error) {
         ElMessage.error('提交评价失败，请稍后重试')
       }
